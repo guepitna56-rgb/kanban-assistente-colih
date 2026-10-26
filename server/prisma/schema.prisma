@@ -1,0 +1,257 @@
+// Prisma Schema para o Sistema de Gestão COLIH
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String            @id @default(uuid())
+  name         String
+  email        String            @unique
+  passwordHash String
+  phone        String?
+  avatarUrl    String?
+  isActive     Boolean           @default(true)
+  googleCalendarConnected Boolean @default(false)
+  googleRefreshToken      String?
+  googleEmail             String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  ownedWorkspaces Workspace[]     @relation("WorkspaceOwner")
+  memberships     WorkspaceMember[]
+  uploadedFiles   Attachment[]    @relation("UserAttachments")
+  auditLogs       AuditLog[]      @relation("UserAudits")
+  notifications   Notification[]  @relation("UserNotifications")
+}
+
+model Workspace {
+  id          String            @id @default(uuid())
+  name        String
+  description String?
+  city        String
+  state       String
+  ownerId     String
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  owner         User              @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  members       WorkspaceMember[]
+  hospitals     Hospital[]
+  doctors       Doctor[]
+
+  boards        Board[]
+  attachments   Attachment[]
+  auditLogs     AuditLog[]
+  notifications Notification[]
+}
+
+model WorkspaceMember {
+  id          String      @id @default(uuid())
+  workspaceId String
+  userId      String
+  role        String      @default("MEMBER") // OWNER, ADMIN, MEMBER, GUEST
+  title       String?     // Ex: Coordenador, Plantonista, Secretário
+  joinedAt    DateTime    @default(now())
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+
+  assignedCards Card[]        @relation("CardAssignee")
+  cards         Card[]        @relation("CardMembers")
+  comments      CardComment[]
+
+  @@unique([workspaceId, userId])
+}
+
+model Hospital {
+  id             String        @id @default(uuid())
+  workspaceId    String
+  name           String
+  legalName      String?
+  type           String        @default("PUBLICO") // PUBLICO, PRIVADO, FILANTROPICO, UNIVERSITARIO
+  address        String?
+  city           String
+  state          String
+  zipCode        String?
+  phone          String?
+  emergencyPhone String?
+  email          String?
+  notes          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  workspace      Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  doctors        Doctor[]
+
+  cards          Card[]
+}
+
+model Doctor {
+  id               String        @id @default(uuid())
+  workspaceId      String
+  hospitalId       String?
+  name             String
+  crm              String
+  crmState         String
+  specialty        String
+  phone            String?
+  email            String?
+  cooperativeLevel String        @default("EM_CONTATO") // COOPERATIVO, CONSULTIVO, RESTRITO, EM_CONTATO
+  acceptsBloodless Boolean       @default(false)
+  notes            String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  workspace        Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  hospital         Hospital?     @relation(fields: [hospitalId], references: [id], onDelete: SetNull)
+
+  cards            Card[]
+}
+
+
+
+model Board {
+  id          String      @id @default(uuid())
+  workspaceId String
+  title       String
+  description String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  lists       BoardList[]
+  labels      BoardLabel[]
+}
+
+model BoardList {
+  id        String   @id @default(uuid())
+  boardId   String
+  title     String
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards     Card[]
+}
+
+model Card {
+  id               String           @id @default(uuid())
+  listId           String
+  title            String
+  description      String?
+  position         Int              @default(0)
+  priority         String           @default("MEDIA") // BAIXA, MEDIA, ALTA, CRITICA
+  startDate        DateTime?
+  dueDate          DateTime?
+  assignedMemberId String?
+
+  hospitalId       String?
+  doctorId         String?
+  tag              String?          // Ex: SCM-MAR, FORM-HLC-31, GUIA-PBM
+  statusBadge      String?          // Ex: Alta Prioridade, Em contato, Pronto HLC-37
+  checklistTitle   String?          // Ex: Checagem de prontuário bioético
+  checklistDone    Boolean          @default(false)
+  cardCategory     String           @default("VISITA") // VISITA, PROTOCOLO, HLC_37, FACILITADOR, PROJETO
+  googleEventId    String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  list             BoardList        @relation(fields: [listId], references: [id], onDelete: Cascade)
+  assignedMember   WorkspaceMember? @relation("CardAssignee", fields: [assignedMemberId], references: [id], onDelete: SetNull)
+  hospital         Hospital?        @relation(fields: [hospitalId], references: [id], onDelete: SetNull)
+  doctor           Doctor?          @relation(fields: [doctorId], references: [id], onDelete: SetNull)
+  comments         CardComment[]
+  attachments      Attachment[]
+  labels           BoardLabel[] @relation("CardLabels")
+  members          WorkspaceMember[] @relation("CardMembers")
+  checklistItems   CardChecklistItem[]
+}
+
+model CardChecklistItem {
+  id        String   @id @default(uuid())
+  cardId    String
+  title     String
+  isDone    Boolean  @default(false)
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+model CardComment {
+  id        String          @id @default(uuid())
+  cardId    String
+  authorId  String
+  content   String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  card      Card            @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  author    WorkspaceMember @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model Attachment {
+  id            String       @id @default(uuid())
+  workspaceId   String
+  filename      String       // Nome no disco local seguro
+  originalName  String       // Nome original fornecido pelo usuário
+  mimeType      String
+  sizeBytes     Int
+  uploadedById  String
+  cardId        String?
+
+  createdAt     DateTime     @default(now())
+
+  workspace     Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  uploadedBy    User         @relation("UserAttachments", fields: [uploadedById], references: [id], onDelete: Cascade)
+  card          Card?        @relation(fields: [cardId], references: [id], onDelete: SetNull)
+}
+
+model AuditLog {
+  id          String    @id @default(uuid())
+  workspaceId String
+  userId      String
+  action      String    // ex: MEDICO_CRIADO, HOSPITAL_ATUALIZADO, MEMBRO_PROMOVIDO
+  entityType  String    // Doctor, Hospital, Card, WorkspaceMember, etc.
+  entityId    String
+  detailsJson String?   // JSON string com detalhes da modificação
+  createdAt   DateTime  @default(now())
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User      @relation("UserAudits", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id              String    @id @default(uuid())
+  workspaceId     String
+  recipientUserId String
+  title           String
+  message         String
+  isRead          Boolean   @default(false)
+  link            String?
+  createdAt       DateTime  @default(now())
+
+  workspace       Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  recipient       User      @relation("UserNotifications", fields: [recipientUserId], references: [id], onDelete: Cascade)
+}
+
+model BoardLabel {
+  id          String   @id @default(uuid())
+  boardId     String
+  title       String?
+  color       String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  board       Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards       Card[]   @relation("CardLabels")
+}

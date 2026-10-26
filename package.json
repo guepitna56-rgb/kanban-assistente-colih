@@ -1,0 +1,16 @@
+{
+  "name": "projetocolih",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema de Gestão COLIH - Comissões de Ligação com Hospitais",
+  "scripts": {
+    "server:dev": "npm run dev --prefix server",
+    "server:build": "npm run build --prefix server",
+    "client:dev": "npm run dev --prefix client",
+    "client:build": "npm run build --prefix client",
+    "test:server": "npm run test --prefix server"
+  },
+  "keywords": ["colih", "hospital", "management", "kanban", "bioethics"],
+  "author": "",
+  "license": "ISC"
+}

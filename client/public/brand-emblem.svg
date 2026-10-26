@@ -1,0 +1,36 @@
+<svg viewBox="0 0 380 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- BÍBLIA / LIVRO ABERTO (À ESQUERDA) -->
+  <g stroke="#1e293b" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Página Esquerda -->
+    <path d="M 42 68 C 30 64 18 63 6 66 C 10 48 16 38 36 36 C 40 46 41 58 42 68 Z" fill="#1e293b" fill-opacity="0.12"/>
+    <path d="M 14 52 C 22 49 30 48 35 48" stroke-width="1.8" stroke-opacity="0.6"/>
+    <path d="M 13 58 C 22 55 30 54 36 55" stroke-width="1.8" stroke-opacity="0.6"/>
+
+    <!-- Página Direita -->
+    <path d="M 42 68 C 54 64 66 63 78 66 C 74 48 68 38 48 36 C 44 46 43 58 42 68 Z" fill="#1e293b" fill-opacity="0.12"/>
+    <path d="M 49 48 C 54 48 62 49 70 52" stroke-width="1.8" stroke-opacity="0.6"/>
+    <path d="M 48 55 C 54 54 62 55 71 58" stroke-width="1.8" stroke-opacity="0.6"/>
+
+    <!-- Fita Marcadora da Bíblia -->
+    <path d="M 42 68 L 42 80 L 45 77 L 48 80 L 48 67" fill="#1e293b" stroke-width="1.5"/>
+
+    <!-- Capa inferior do livro -->
+    <path d="M 6 66 L 42 75 L 78 66 L 78 70 L 42 79 L 6 70 Z" fill="#1e293b" stroke-width="2.5"/>
+
+    <!-- Linha de saída do livro que se conecta ao ECG -->
+    <path d="M 78 66 C 84 66 88 67 94 67 L 102 67" stroke-width="3.6" stroke-linecap="round"/>
+  </g>
+
+  <!-- PULSO VITAL CONTÍNUO (ECG) -->
+  <path d="M 102 67 L 112 67 Q 118 64 122 61 Q 126 67 132 67 L 138 67 L 144 73 L 154 18 L 165 94 L 174 67 L 184 67 Q 192 58 200 67 L 220 67 Q 228 64 232 61 Q 236 67 242 67 L 248 67 L 253 73 L 262 24 L 272 90 L 280 67 L 298 67" stroke="#1e293b" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- ESTETOSCÓPIO MÉDICO (À DIREITA) -->
+  <g stroke="#1e293b" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 298 67 C 310 67 318 64 322 57 L 322 50"/>
+    <circle cx="322" cy="46" r="6" fill="#1e293b" stroke-width="2.5"/>
+    <path d="M 322 46 C 322 30 304 25 301 12 C 299 4 306 3 309 3" fill="none"/>
+    <path d="M 322 46 C 322 30 340 25 343 12 C 345 4 338 3 335 3" fill="none"/>
+    <circle cx="309" cy="3" r="3.2" fill="#1e293b"/>
+    <circle cx="335" cy="3" r="3.2" fill="#1e293b"/>
+  </g>
+</svg>

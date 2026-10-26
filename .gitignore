@@ -1,0 +1,46 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Diagnostic / Runtime files
+node_modules/
+dist/
+dist-ssr/
+build/
+*.local
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+*.pem
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# SQLite Databases & Backups
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Uploads
+server/uploads/*
+!server/uploads/.gitkeep
+
+# Claude / Gemini / AI Agent Local Skills & Workspaces
+.agents/
+.claude/

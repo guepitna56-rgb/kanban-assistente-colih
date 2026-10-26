@@ -1,0 +1,46 @@
+<svg viewBox="0 0 320 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Grupo Principal do Emblema -->
+  <g stroke="#1e293b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    
+    <!-- 1. LIVRO / BÍBLIA EM PERSPECTIVA ISOMÉTRICA (Exatamente como a referência) -->
+    <!-- Capa e Espessura Inferior -->
+    <path d="M 12 52 L 28 60 L 68 53 L 68 57 L 28 64 L 12 56 Z" fill="#1e293b"/>
+    <path d="M 68 57 L 88 52 L 88 48 L 68 53 Z" fill="#1e293b" fill-opacity="0.7"/>
+
+    <!-- Página Esquerda (Superfície Aberta) -->
+    <polygon points="26,38 65,33 68,53 28,60" fill="#1e293b" fill-opacity="0.85"/>
+    <polygon points="12,52 28,60 26,38 14,34" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+
+    <!-- Página Direita (Superfície Aberta) -->
+    <polygon points="65,33 96,37 88,52 68,53" fill="#1e293b" fill-opacity="0.85"/>
+    <polygon points="96,37 102,40 88,52" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+
+    <!-- Vínculo da lombada central do livro -->
+    <line x1="65" y1="33" x2="68" y2="53" stroke="#ffffff" stroke-width="2.2"/>
+
+    <!-- 2. CONEXÃO CONTÍNUA COM O PULSO DE ECG -->
+    <!-- Linha sai da borda do livro -->
+    <path d="M 88 52 L 104 52" stroke-width="3"/>
+
+    <!-- Primeiro Complexo de Pulso ECG -->
+    <path d="M 104 52 L 110 52 L 114 59 L 119 24 L 125 86 L 130 52 L 180 52" stroke-width="3"/>
+
+    <!-- Segundo Complexo de Pulso ECG (Mais expressivo e vital) -->
+    <path d="M 180 52 L 186 52 L 190 60 L 196 10 L 204 88 L 210 32 L 216 52 L 244 52" stroke-width="3"/>
+
+    <!-- 3. TRANSIÇÃO PARA O ESTETOSCÓPIO -->
+    <!-- Curva em direção à base do estetoscópio -->
+    <path d="M 244 52 C 254 52 258 48 258 40 L 258 36" stroke-width="3"/>
+
+    <!-- Campânula / Base do Estetoscópio -->
+    <ellipse cx="258" cy="35" rx="5" ry="3.5" fill="#1e293b"/>
+
+    <!-- Tubos Binaurais em Arco Upright (Hastes metálicas) -->
+    <path d="M 258 35 C 254 28 243 20 242 10 C 242 5 246 4 249 4" fill="none" stroke-width="3"/>
+    <path d="M 258 35 C 262 28 273 20 274 10 C 274 5 270 4 267 4" fill="none" stroke-width="3"/>
+
+    <!-- Olivas Auriculares do Estetoscópio -->
+    <circle cx="249" cy="4" r="2.8" fill="#1e293b"/>
+    <circle cx="267" cy="4" r="2.8" fill="#1e293b"/>
+  </g>
+</svg>
